@@ -94,6 +94,7 @@ public class SBFolderLayout extends FrameLayout{
 	
 	
 	Animation mScaleBig;
+	Animation mScaleSmall;
 	
 	public void showCoverView(int x, int y){
 		if(mCoverView == null){
@@ -131,7 +132,27 @@ public class SBFolderLayout extends FrameLayout{
 	
 	public void hideCoverView(){
 		if(mCoverView == null) return;
-		mCoverViewLayout.setVisibility(View.GONE);
+		
+		if(mScaleSmall == null){
+			mScaleSmall = AnimationUtils.loadAnimation(getContext(), R.anim.scale_small);
+			mScaleSmall.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation animation) {
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					mCoverViewLayout.setVisibility(View.GONE);
+				}
+			});
+		}
+		
+		mCoverContainer.startAnimation(mScaleSmall);
 	}
 	
 	public boolean isShowCoverView(){
