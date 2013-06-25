@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -31,9 +32,12 @@ public class MainActivity extends Activity {
 		mGridView = (GridView) content.findViewById(R.id.grid);
 		mGridView.setAdapter(new GridAdapter());
 		mGridView.setOnItemClickListener(new GridItemClickListener());
+		
 		mFolderLayout.setContentView(content);
 		
 		View cover = getLayoutInflater().inflate(R.layout.cover, null);
+		cover.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 180));
+		
 		mFolderLayout.setCoverView(cover);
 	}
 
@@ -59,7 +63,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			mFolderLayout.showCoverView(10, 40);
+			mFolderLayout.showCoverView(10, 100);
 		}
 	}
 	
