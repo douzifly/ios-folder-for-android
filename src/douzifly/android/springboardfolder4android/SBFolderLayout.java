@@ -8,19 +8,23 @@ package douzifly.android.springboardfolder4android;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 /**
  * 
  * SBFolderLayout is iOS SpringBoard folder implementation for Android
+ * 
  * @author douzifly 
  *
  */
@@ -34,9 +38,10 @@ public class SBFolderLayout extends FrameLayout{
 	/**
 	 * view which contains cover view and mock content view
 	 */
-	private LinearLayout mCoverViewLayout;
+	private FrameLayout mCoverViewLayout;
 	
 	private FrameLayout mCoverContainer; 
+	private View mMockView;
 	
 	/**
 	 * @param context
@@ -47,8 +52,8 @@ public class SBFolderLayout extends FrameLayout{
 	}
 	
 	private void installConverViewContainer(final View contentView){
-		mCoverViewLayout = new LinearLayout(getContext());
-		mCoverViewLayout.setOrientation(LinearLayout.VERTICAL);
+		mCoverViewLayout = new FrameLayout(getContext());
+//		mCoverViewLayout.setOrientation(LinearLayout.VERTICAL);
 		mCoverViewLayout.setVisibility(View.GONE);
 		mCoverViewLayout.setBackgroundColor(Color.GRAY);
 		
@@ -56,7 +61,7 @@ public class SBFolderLayout extends FrameLayout{
 		mCoverContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		mCoverViewLayout.addView(mCoverContainer);
 		
-		FrameLayout mockView = new FrameLayout(getContext()){
+		mMockView = new FrameLayout(getContext()){
 			@Override
 			public void draw(Canvas canvas) {
 				contentView.draw(canvas);
@@ -68,9 +73,9 @@ public class SBFolderLayout extends FrameLayout{
 				return true;
 			}
 		};
-		mockView.setBackgroundColor(Color.TRANSPARENT);
+		mMockView.setBackgroundColor(Color.TRANSPARENT);
 		
-		mCoverViewLayout.addView(mockView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		mCoverViewLayout.addView(mMockView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		addView(mCoverViewLayout);
 	}
 	
@@ -90,14 +95,28 @@ public class SBFolderLayout extends FrameLayout{
 		}
 		mCoverView = coverView;
 		mCoverContainer.addView(coverView);
+		coverView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
+			}
+		});
 	}
 	
 	
-	Animation mScaleBig;
-	Animation mScaleSmall;
+	Animation mAnimDown;
+	Animation mAnimUp;
 	
+	
+	// mockView 盖住coverContainer, 然后往下滑动，呈现coverContainer
 	public void showCoverView(int x, int y){
 		if(mCoverView == null){
+			return;
+		}
+		
+		if(isShowCoverView()){
+			Log.d(TAG, "showing");
 			return;
 		}
 		
@@ -109,9 +128,13 @@ public class SBFolderLayout extends FrameLayout{
 		lp.topMargin = y;
 		mCoverViewLayout.setLayoutParams(lp);
 		mCoverViewLayout.setVisibility(View.VISIBLE);
-		if(mScaleBig == null){
-			mScaleBig = AnimationUtils.loadAnimation(getContext(), R.anim.scale_big);
-			mScaleBig.setAnimationListener(new AnimationListener() {
+//		mCoverContainer.setVisibility(View.GONE);
+		if(mAnimDown == null){
+			mAnimDown = new TranslateAnimation(0, 0, 0, mCoverView.getHeight());
+			mAnimDown.setDuration(1000);
+			mAnimDown.setInterpolator(new AccelerateInterpolator());
+			mAnimDown.setFillAfter(true);
+			mAnimDown.setAnimationListener(new AnimationListener() {
 				
 				@Override
 				public void onAnimationStart(Animation arg0) {
@@ -123,41 +146,21 @@ public class SBFolderLayout extends FrameLayout{
 				
 				@Override
 				public void onAnimationEnd(Animation arg0) {
-					
 				}
 			});
 		}
-		mCoverContainer.startAnimation(mScaleBig);
+		
+		mMockView.startAnimation(mAnimDown);
+		
 	}
 	
 	public void hideCoverView(){
 		if(mCoverView == null) return;
-		
-		if(mScaleSmall == null){
-			mScaleSmall = AnimationUtils.loadAnimation(getContext(), R.anim.scale_small);
-			mScaleSmall.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					mCoverViewLayout.setVisibility(View.GONE);
-				}
-			});
-		}
-		
-		mCoverContainer.startAnimation(mScaleSmall);
+		mCoverViewLayout.setVisibility(View.GONE);
 	}
 	
 	public boolean isShowCoverView(){
 		return mCoverViewLayout == null ? false : mCoverViewLayout.getVisibility() == View.VISIBLE;
 	}
 	
-
 }
