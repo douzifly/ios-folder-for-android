@@ -43,7 +43,6 @@ public class MockView extends View{
 			m.reset();
 			m.setTranslate(0, -mClipYOffset);
 			canvas.concat(m);
-//			canvas.setMatrix(m);
 			mTargetView.draw(canvas);
 			canvas.restore();
 		}
