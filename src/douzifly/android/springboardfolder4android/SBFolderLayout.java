@@ -25,7 +25,7 @@ import android.widget.FrameLayout;
  * @author douzifly 
  *
  */
-public class SBFolderLayout1 extends FrameLayout{
+public class SBFolderLayout extends FrameLayout{
 	
 	final static String TAG = "SBFolderLayout" ;
 
@@ -44,7 +44,7 @@ public class SBFolderLayout1 extends FrameLayout{
 	 * @param context
 	 * @param attrs
 	 */
-	public SBFolderLayout1(Context context, AttributeSet attrs) {
+	public SBFolderLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater infl = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		infl.inflate(R.layout.sbf_layout, this);
@@ -108,7 +108,7 @@ public class SBFolderLayout1 extends FrameLayout{
 			return;
 		}
 		
-		if(isShowCoverView()){
+		if(isShowFolderView()){
 			Log.d(TAG, "showing");
 			return;
 		}
@@ -167,8 +167,31 @@ public class SBFolderLayout1 extends FrameLayout{
 		mMockView.startAnimation(mAnimUp);
 	}
 	
-	public boolean isShowCoverView(){
+	public boolean isShowFolderView(){
 		return mTopContainer == null ? false : mTopContainer.getVisibility() == View.VISIBLE;
 	}
 	
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		// close folder when touch section above folder when folder on
+		if(isShowFolderView()){
+			if(ev.getY() < mTopContainer.getTop()){
+				return true;
+			}
+		}
+		return super.onInterceptTouchEvent(ev);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		if(isShowFolderView()){
+			if(ev.getY() < mTopContainer.getTop()){
+				if(ev.getAction() == MotionEvent.ACTION_UP){
+					hideCoverView();
+				}
+				return true;
+			}
+		}
+		return super.onTouchEvent(ev);
+	}
 }

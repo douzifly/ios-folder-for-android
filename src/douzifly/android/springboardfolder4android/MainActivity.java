@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 	
-	SBFolderLayout1 mFolderLayout;
+	SBFolderLayout mFolderLayout;
 	
 	GridView mGridView;
 	
@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		mFolderLayout = (SBFolderLayout1) findViewById(R.id.sbFolder);
+		mFolderLayout = (SBFolderLayout) findViewById(R.id.sbFolder);
 		mFolderLayout.setBackgroundColor(Color.GRAY);
 	
 		View content = getLayoutInflater().inflate(R.layout.grid_content, null);
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK){
-			if(mFolderLayout.isShowCoverView()){
+			if(mFolderLayout.isShowFolderView()){
 				mFolderLayout.hideCoverView();
 				return true;
 			}

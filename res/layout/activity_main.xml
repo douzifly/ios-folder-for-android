@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-   <douzifly.android.springboardfolder4android.SBFolderLayout1 
+   <douzifly.android.springboardfolder4android.SBFolderLayout 
        android:id="@+id/sbFolder"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        >
-   </douzifly.android.springboardfolder4android.SBFolderLayout1>
+   </douzifly.android.springboardfolder4android.SBFolderLayout>
 
 </RelativeLayout>
