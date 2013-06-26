@@ -16,7 +16,6 @@ import android.view.View;
  */
 public class MockView extends View{
 
-	// TODO use weakreference
 	private View mTargetView;
 	
 	private int mClipYOffset;

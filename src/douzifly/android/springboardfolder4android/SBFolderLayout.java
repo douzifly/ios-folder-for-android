@@ -98,8 +98,10 @@ public class SBFolderLayout extends FrameLayout{
 	}
 	
 	
-	Animation mAnimDown;
-	Animation mAnimUp;
+	Animation mAnimMockViewDown;
+	Animation mAnimMockViewUp;
+	Animation mAnimTotalUp;
+	Animation mAnimTotalDown;
 	boolean mShowing = false;
 	boolean mHiding = false;
 	
@@ -133,12 +135,12 @@ public class SBFolderLayout extends FrameLayout{
 		mMockView.setClipYOffset(y);
 		
 		mTopContainer.setVisibility(View.VISIBLE);
-		if(mAnimDown == null){
-			mAnimDown = new TranslateAnimation(0, 0, 0, mFolderHeight);
-			mAnimDown.setDuration(400);
-			mAnimDown.setInterpolator(new AccelerateInterpolator());
-			mAnimDown.setFillAfter(true);
-			mAnimDown.setAnimationListener(new AnimationListener() {
+		if(mAnimMockViewDown == null){
+			mAnimMockViewDown = new TranslateAnimation(0, 0, 0, mFolderHeight);
+			mAnimMockViewDown.setDuration(400);
+			mAnimMockViewDown.setInterpolator(new AccelerateInterpolator());
+			mAnimMockViewDown.setFillAfter(true);
+			mAnimMockViewDown.setAnimationListener(new AnimationListener() {
 				
 				@Override
 				public void onAnimationStart(Animation arg0) {
@@ -156,14 +158,22 @@ public class SBFolderLayout extends FrameLayout{
 			});
 		}
 		
-		mMockView.startAnimation(mAnimDown);
+		if(mAnimTotalUp == null){
+			mAnimTotalUp = new TranslateAnimation(0, 0, 0, -mFolderHeight);
+			mAnimTotalUp.setDuration(400);
+			mAnimTotalUp.setInterpolator(new AccelerateInterpolator());
+			mAnimTotalUp.setFillAfter(true);
+		}
 		
+//		mContentView.startAnimation(mAnimTotalUp);
+//		mFolderView.startAnimation(mAnimTotalUp);
+		mMockView.startAnimation(mAnimMockViewDown);
 	}
 	
 	public void hideFolderView(){
 		if(mFolderView == null) return;
 		
-		if(mAnimDown != null && !mAnimDown.hasEnded()){
+		if(mAnimMockViewDown != null && !mAnimMockViewDown.hasEnded()){
 			return;
 		}
 		
@@ -171,12 +181,12 @@ public class SBFolderLayout extends FrameLayout{
 			return;
 		}
 		
-		if(mAnimUp == null){
-			mAnimUp = new TranslateAnimation(0, 0, mFolderHeight, 0);
-			mAnimUp.setDuration(400);
-			mAnimUp.setInterpolator(new DecelerateInterpolator());
-			mAnimUp.setFillAfter(true);
-			mAnimUp.setAnimationListener(new AnimationListener() {
+		if(mAnimMockViewUp == null){
+			mAnimMockViewUp = new TranslateAnimation(0, 0, mFolderHeight, 0);
+			mAnimMockViewUp.setDuration(400);
+			mAnimMockViewUp.setInterpolator(new DecelerateInterpolator());
+			mAnimMockViewUp.setFillAfter(true);
+			mAnimMockViewUp.setAnimationListener(new AnimationListener() {
 				
 				@Override
 				public void onAnimationStart(Animation arg0) {
@@ -196,7 +206,17 @@ public class SBFolderLayout extends FrameLayout{
 			});
 		}
 		
-		mMockView.startAnimation(mAnimUp);
+		if(mAnimTotalDown == null){
+			mAnimTotalDown = new TranslateAnimation(0, 0, -mFolderHeight, 0);
+			mAnimTotalDown.setDuration(400);
+			mAnimTotalDown.setInterpolator(new AccelerateInterpolator());
+			mAnimTotalDown.setFillAfter(true);
+		}
+		
+//		mContentView.startAnimation(mAnimTotalDown);
+//		mFolderView.startAnimation(mAnimTotalDown);
+		
+		mMockView.startAnimation(mAnimMockViewUp);
 	}
 	
 	public boolean isShowFolderView(){
