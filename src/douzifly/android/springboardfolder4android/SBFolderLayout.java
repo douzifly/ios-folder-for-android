@@ -62,7 +62,7 @@ public class SBFolderLayout extends FrameLayout{
 				
 				// close folder when touch on mock view 
 				if(arg1.getY() > mFolderHeight){
-					hideCoverView();
+					hideFolderView();
 					return true;
 				}
 				return false;
@@ -87,7 +87,7 @@ public class SBFolderLayout extends FrameLayout{
 	
 	public void setFolderView(View folderView){
 		mFolderView = folderView;
-		mFolderContainer.addView(folderView);
+		mFolderContainer.addView(folderView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		folderView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -100,6 +100,8 @@ public class SBFolderLayout extends FrameLayout{
 	
 	Animation mAnimDown;
 	Animation mAnimUp;
+	boolean mShowing = false;
+	boolean mHiding = false;
 	
 	int mFolderHeight = 0;
 	// mockView slide down then folder view disappeared.
@@ -110,6 +112,10 @@ public class SBFolderLayout extends FrameLayout{
 		
 		if(isShowFolderView()){
 			Log.d(TAG, "showing");
+			return;
+		}
+		
+		if(mHiding || mShowing){
 			return;
 		}
 		
@@ -132,14 +138,38 @@ public class SBFolderLayout extends FrameLayout{
 			mAnimDown.setDuration(400);
 			mAnimDown.setInterpolator(new AccelerateInterpolator());
 			mAnimDown.setFillAfter(true);
+			mAnimDown.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation arg0) {
+					mShowing = true;
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation arg0) {
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					mShowing = false;
+				}
+			});
 		}
 		
 		mMockView.startAnimation(mAnimDown);
 		
 	}
 	
-	public void hideCoverView(){
+	public void hideFolderView(){
 		if(mFolderView == null) return;
+		
+		if(mAnimDown != null && !mAnimDown.hasEnded()){
+			return;
+		}
+		
+		if(mShowing || mHiding){
+			return;
+		}
 		
 		if(mAnimUp == null){
 			mAnimUp = new TranslateAnimation(0, 0, mFolderHeight, 0);
@@ -150,6 +180,7 @@ public class SBFolderLayout extends FrameLayout{
 				
 				@Override
 				public void onAnimationStart(Animation arg0) {
+					mHiding = true;
 				}
 				
 				@Override
@@ -160,6 +191,7 @@ public class SBFolderLayout extends FrameLayout{
 				public void onAnimationEnd(Animation arg0) {
 					// hide top container when animation finished
 					mTopContainer.setVisibility(View.GONE);
+					mHiding = false;
 				}
 			});
 		}
@@ -187,7 +219,7 @@ public class SBFolderLayout extends FrameLayout{
 		if(isShowFolderView()){
 			if(ev.getY() < mTopContainer.getTop()){
 				if(ev.getAction() == MotionEvent.ACTION_UP){
-					hideCoverView();
+					hideFolderView();
 				}
 				return true;
 			}

@@ -5,14 +5,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
@@ -35,10 +39,18 @@ public class MainActivity extends Activity {
 		
 		mFolderLayout.setContentView(content);
 		
-		View cover = getLayoutInflater().inflate(R.layout.cover, null);
-		cover.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 180));
+		View folder = getLayoutInflater().inflate(R.layout.folder, null);
+		folder.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 200));
+		Button btnClose = (Button)folder.findViewById(R.id.btn_close);
+		btnClose.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				mFolderLayout.hideFolderView();
+			}
+		});
 		
-		mFolderLayout.setFolderView(cover);
+		mFolderLayout.setFolderView(folder);
 	}
 
 	@Override
@@ -49,10 +61,20 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if(item.getItemId() == R.id.action_about){
+			Toast.makeText(this, "douzifly@gmail.com", Toast.LENGTH_SHORT).show();
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK){
 			if(mFolderLayout.isShowFolderView()){
-				mFolderLayout.hideCoverView();
+				mFolderLayout.hideFolderView();
 				return true;
 			}
 		}
@@ -71,7 +93,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			return 10;
+			return 30;
 		}
 
 		@Override
