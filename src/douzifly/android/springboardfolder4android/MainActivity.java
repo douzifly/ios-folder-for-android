@@ -40,7 +40,6 @@ public class MainActivity extends Activity {
 		mFolderLayout.setContentView(content);
 		
 		View folder = getLayoutInflater().inflate(R.layout.folder, null);
-		folder.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 200));
 		Button btnClose = (Button)folder.findViewById(R.id.btn_close);
 		btnClose.setOnClickListener(new OnClickListener() {
 			
