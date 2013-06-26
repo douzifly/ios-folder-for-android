@@ -1,7 +1,6 @@
 /**
- * Author:XiaoyuanLiu
+ * Author: douzifly@gmail.com
  * Date: Jun 26, 2013
- * 深圳快播科技
  */
 package douzifly.android.springboardfolder4android;
 
@@ -12,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * @author XiaoyuanLiu
+ * @author douzifly@gmail.com 
  *
  */
 public class MockView extends View{
