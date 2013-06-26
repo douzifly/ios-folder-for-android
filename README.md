@@ -1,4 +1,4 @@
-*This project is iOS SpringBorad folder implementation for Android.*
+*This project is iOS SpringBoard folder implementation for Android.*
 
 It's looks like
 
