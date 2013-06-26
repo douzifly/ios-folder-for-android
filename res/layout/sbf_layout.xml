@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/sbf_layout"
+    android:layout_height="match_parent" >
+    
+    <FrameLayout android:id="@+id/sbf_content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+    </FrameLayout>
+    
+    <FrameLayout android:id="@+id/sbf_top_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <FrameLayout android:id="@+id/sbf_folder_container"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            
+        </FrameLayout>
+        
+        <douzifly.android.springboardfolder4android.MockView 
+            android:id="@+id/sbf_mock_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,22 +1,22 @@
 package douzifly.android.springboardfolder4android;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 	
-	SBFolderLayout mFolderLayout;
+	SBFolderLayout1 mFolderLayout;
 	
 	GridView mGridView;
 	
@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		mFolderLayout = (SBFolderLayout) findViewById(R.id.sbFolder);
+		mFolderLayout = (SBFolderLayout1) findViewById(R.id.sbFolder);
 		mFolderLayout.setBackgroundColor(Color.GRAY);
 	
 		View content = getLayoutInflater().inflate(R.layout.grid_content, null);
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 		View cover = getLayoutInflater().inflate(R.layout.cover, null);
 		cover.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 180));
 		
-		mFolderLayout.setCoverView(cover);
+		mFolderLayout.setFolderView(cover);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			mFolderLayout.showCoverView(10, 100);
+			mFolderLayout.showFolderView(100);
 		}
 	}
 	
