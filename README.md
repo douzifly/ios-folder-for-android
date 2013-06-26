@@ -2,4 +2,4 @@
 
 It's looks like
 
-![DemoImage]()
+![DemoImage](https://github.com/douzifly/sbf4android/blob/master/show.gif?raw=true)
