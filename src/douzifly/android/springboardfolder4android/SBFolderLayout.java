@@ -85,7 +85,11 @@ public class SBFolderLayout extends FrameLayout{
 		mContentContainer.addView(contentView);
 	}
 	
-	
+	/**
+	 * if folderView's root element is LinearLayout, the view height may not be measured
+	 * @param folderView
+	 * @param lp
+	 */
 	public void setFolderView(View folderView, LayoutParams lp){
 		mFolderView = folderView;
 		mFolderContainer.addView(folderView, lp);
@@ -98,6 +102,11 @@ public class SBFolderLayout extends FrameLayout{
 		});
 	}
 	
+	/**
+	 * if folderView's root element is LinearLayout, the view height may not be measured
+	 * @param resId
+	 * @return
+	 */
 	public View setFolderView(int resId){
 		LayoutInflater infl = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		infl.inflate(resId, mFolderContainer);
