@@ -85,9 +85,10 @@ public class SBFolderLayout extends FrameLayout{
 		mContentContainer.addView(contentView);
 	}
 	
-	public void setFolderView(View folderView){
+	
+	public void setFolderView(View folderView, LayoutParams lp){
 		mFolderView = folderView;
-		mFolderContainer.addView(folderView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		mFolderContainer.addView(folderView, lp);
 		folderView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -95,6 +96,20 @@ public class SBFolderLayout extends FrameLayout{
 				return true;
 			}
 		});
+	}
+	
+	public View setFolderView(int resId){
+		LayoutInflater infl = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		infl.inflate(resId, mFolderContainer);
+		mFolderView = mFolderContainer.getChildAt(0);
+		mFolderView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
+			}
+		});
+		return mFolderView;
 	}
 	
 	

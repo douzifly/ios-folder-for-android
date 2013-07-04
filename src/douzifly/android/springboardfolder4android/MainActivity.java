@@ -39,7 +39,10 @@ public class MainActivity extends Activity {
 		
 		mFolderLayout.setContentView(content);
 		
-		View folder = getLayoutInflater().inflate(R.layout.folder, null);
+		
+		
+		View folder = mFolderLayout.setFolderView(R.layout.folder);
+		
 		Button btnClose = (Button)folder.findViewById(R.id.btn_close);
 		btnClose.setOnClickListener(new OnClickListener() {
 			
@@ -48,8 +51,6 @@ public class MainActivity extends Activity {
 				mFolderLayout.hideFolderView();
 			}
 		});
-		
-		mFolderLayout.setFolderView(folder);
 	}
 
 	@Override
