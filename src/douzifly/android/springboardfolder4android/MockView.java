@@ -6,6 +6,7 @@ package douzifly.android.springboardfolder4android;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MockView extends View{
 	 */
 	public MockView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		setBackgroundColor(Color.RED);
 	}
 	
 	

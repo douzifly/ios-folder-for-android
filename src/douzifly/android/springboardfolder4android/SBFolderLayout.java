@@ -130,6 +130,7 @@ public class SBFolderLayout extends FrameLayout{
 	boolean mHiding = false;
 	
 	int mFolderHeight = 0;
+	int mFolderOffsetY = 0;
 	// mockView slide down then folder view disappeared.
 	public void showFolderView(int y){
 		if(mFolderView == null){
@@ -145,16 +146,14 @@ public class SBFolderLayout extends FrameLayout{
 			return;
 		}
 		
+		mFolderOffsetY = y;
 		// measure height of folder view
 		mFolderView.measure(getWidth(), getHeight());
 		mFolderHeight = mFolderView.getMeasuredHeight();
 		Log.d(TAG, "folderHeight:" + mFolderHeight);
 		
-		// set height of top container
-		LayoutParams lp = (FrameLayout.LayoutParams)mTopContainer.getLayoutParams();
-		lp.topMargin = y;
-		mTopContainer.setLayoutParams(lp);
-		
+		// set y offset of top container
+		mTopContainer.scrollTo(0, -y);
 		// set mock view clip offset
 		mMockView.setClipYOffset(y);
 		
@@ -189,8 +188,6 @@ public class SBFolderLayout extends FrameLayout{
 			mAnimTotalUp.setFillAfter(true);
 		}
 		
-//		mContentView.startAnimation(mAnimTotalUp);
-//		mFolderView.startAnimation(mAnimTotalUp);
 		mMockView.startAnimation(mAnimMockViewDown);
 	}
 	
@@ -237,9 +234,6 @@ public class SBFolderLayout extends FrameLayout{
 			mAnimTotalDown.setFillAfter(true);
 		}
 		
-//		mContentView.startAnimation(mAnimTotalDown);
-//		mFolderView.startAnimation(mAnimTotalDown);
-		
 		mMockView.startAnimation(mAnimMockViewUp);
 	}
 	
@@ -251,7 +245,7 @@ public class SBFolderLayout extends FrameLayout{
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// close folder when touch section above folder when folder on
 		if(isShowFolderView()){
-			if(ev.getY() < mTopContainer.getTop()){
+			if(ev.getY() < mFolderOffsetY){
 				return true;
 			}
 		}
@@ -260,8 +254,9 @@ public class SBFolderLayout extends FrameLayout{
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
+		// close folder when touch section above folder when folder on
 		if(isShowFolderView()){
-			if(ev.getY() < mTopContainer.getTop()){
+			if(ev.getY() < mFolderOffsetY){
 				if(ev.getAction() == MotionEvent.ACTION_UP){
 					hideFolderView();
 				}
