@@ -27,7 +27,6 @@ public class MockView extends View{
 	 */
 	public MockView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setBackgroundColor(Color.RED);
 	}
 	
 	
